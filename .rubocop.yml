@@ -1,0 +1,51 @@
+AllCops:
+  # Define o diretório raiz do projeto para fins de inclusão/exclusão
+  TargetRubyVersion: 3.0
+  NewCops: enable
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+    - 'node_modules/**/*'
+    - '.git/**/*'
+
+# Desabilita a regra de tamanho máximo de linha
+Metrics/LineLength:
+  Enabled: false
+
+# Desabilita a regra de tamanho máximo de bloco
+Metrics/BlockLength:
+  Enabled: false
+
+# Desabilita a regra de tamanho máximo de método
+Metrics/MethodLength:
+  Enabled: false
+
+# Desabilita a regra de complexidade ciclomática
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+# Desabilita a regra de complexidade do método
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+# Desabilita a regra de tamanho máximo da classe
+Metrics/ClassLength:
+  Enabled: false
+
+# Desabilita a regra de tamanho máximo do módulo
+Metrics/ModuleLength:
+  Enabled: false
+
+# Desabilita a regra de tamanho máximo do hash
+Style/HashTransformKeys:
+  Enabled: false
+
+# Desabilita a regra de tamanho máximo do array
+Style/HashTransformValues:
+  Enabled: false
+
