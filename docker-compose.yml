@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:13.2-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  redis-queue:
+    image: redis:6.0.12-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-queue-data:/data
+
+  redis-cache:
+    image: redis:6.0.12-alpine
+    ports:
+      - 6380:6379
+    volumes:
+      - redis-cache-data:/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "rm -f tmp/pids/server.pid && rails db:create db:migrate && rails server -b 0.0.0.0"
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    depends_on:
+      - postgres
+      - redis-queue
+      - redis-cache
+    environment:
+      - DATABASE_HOST=postgres
+      - REDIS_URL=redis://redis-queue:6379
+      - REDIS_CACHE_URL=redis://redis-cache:6380
+
+
+volumes:
+  redis-queue-data:
+  redis-cache-data:
+  postgres-data:
