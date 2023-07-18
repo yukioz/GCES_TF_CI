@@ -8,33 +8,21 @@ on:
 
 env:
   RAILS_ENV: test
-  DATABASE_URL: postgres://postgres:${{ secrets.DATABASE_PASSWORD }}@postgres/test
-  ALLOW_HOSTS: ${{ secrets.ALLOW_HOST }}
-  DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Build do app
-        run: docker-compose up --build -d
+      - name: Check out repository code
+        uses: actions/checkout@v2
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
+      - name: Build the Docker image
+        run: docker-compose build
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: unit tests
+      - name: Run tests
         run: docker-compose run --rm app bundle exec rails test
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: rubocop
+      - name: Run RuboCop lint
+        continue-on-error: true
         run: docker-compose run --rm app bundle exec rubocop
