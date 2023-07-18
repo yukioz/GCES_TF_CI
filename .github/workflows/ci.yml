@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build do app
-        run: docker-compose up --build
+        run: docker-compose up --build -d
 
   test:
     runs-on: ubuntu-latest
