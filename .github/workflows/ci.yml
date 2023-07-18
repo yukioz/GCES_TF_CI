@@ -1,4 +1,4 @@
-name: Ruby on Rails CI
+name: CI from decidim
 
 on:
   push:
@@ -10,14 +10,14 @@ env:
   RAILS_ENV: test
 
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Build the Docker image
+      - name: Build
         run: docker-compose build
 
       - name: Run tests
