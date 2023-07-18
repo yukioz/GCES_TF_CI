@@ -17,25 +17,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      -uses: actions/checkout@v2
-      -name: Build do app
-      run: docker-compose up --build
+      - uses: actions/checkout@v2
+      - name: Build do app
+        run: docker-compose up --build
 
   test:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-      -uses: actions/checkout@v2
-      -name: unit tests
-      run: docker-compose run --rm app bundle exec rails test
-
+      - uses: actions/checkout@v2
+      - name: unit tests
+        run: docker-compose run --rm app bundle exec rails test
 
   lint:
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-      -uses: actions/checkout@v2
-      -name: rubocop
-      run: docker-compose run --rm app bundle exec rubocop
+      - uses: actions/checkout@v2
+      - name: rubocop
+        run: docker-compose run --rm app bundle exec rubocop
