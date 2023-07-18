@@ -8,7 +8,7 @@ on:
 
 jobs: 
   build:
-    uses: yukioz/GCES_TF_CI/blob/main/.github/workflows/ci.yml@main
+    uses: yukioz/GCES_TF_CI/.github/workflows/ci.yml@main
   deploy:
     name: Build docker image
     runs-on: ubuntu-latest
