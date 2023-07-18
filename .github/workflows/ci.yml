@@ -8,36 +8,34 @@ on:
 
 env:
   RAILS_ENV: test
-  DATABASE_URL: postgres://postgres:postgres@postgres/test
+  DATABASE_URL: postgres://postgres:${{ secrets.DATABASE_PASSWORD }}@postgres/test
+  ALLOW_HOSTS: ${{ secrets.ALLOW_HOST }}
+  DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:13.2-alpine
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      redis-queue:
-        image: redis:6.0.12-alpine
-      redis-cache:
-        image: redis:6.0.12-alpine
+    steps:
+      -uses: actions/checkout@v2
+      -name: Build do app
+        run: docker-compose up --build
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
 
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-
-      - name: Build the Docker image
-        run: docker-compose build
-
-      - name: Set up the database
-        run: docker-compose run --rm app bundle exec rails db:create db:schema:load
-
-      - name: Run tests
+      -uses: actions/checkout@v2
+      -name: unit tests
         run: docker-compose run --rm app bundle exec rails test
 
-      - name: Run RuboCop
-        continue-on-error: true
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      -uses: actions/checkout@v2
+      -name: rubocop
         run: docker-compose run --rm app bundle exec rubocop
