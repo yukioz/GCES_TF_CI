@@ -3,12 +3,16 @@ name: decidim CD
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
-jobs:
+jobs: 
+  build:
+    uses: yukioz/GCES_TF_CI/blob/main/.github/workflows/ci.yml@main
   deploy:
     name: Build docker image
     runs-on: ubuntu-latest
-    needs: CI from decidim.pipeline
+    needs: [build]
     if: github.ref == 'refs/heads/main'
 
     steps:
