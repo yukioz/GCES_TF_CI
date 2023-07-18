@@ -2,6 +2,7 @@ name: decidim CD
 
 on:
   workflow_call:
+  workflowdispatch:
   push:
     branches: [main]
   pull_request:
